@@ -43,8 +43,20 @@ shinyUI(navbarPage("Project 3",
      )  
     )           
            ),
+  
+  ##Data Exploration Page Section
   tabPanel("Data Exploration"),
-  tabPanel("Modeling")
+  
+  ##Modeling Page Section
+  tabPanel("Modeling",
+   mainPanel(
+      tabsetPanel(
+        tabPanel("Modeling Info"),
+        tabPanel("Model Fitting"),
+        tabPanel("Prediction")
+      )
+   )           
+  )
                    
                                       
 ))                   
