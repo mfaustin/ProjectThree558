@@ -11,12 +11,15 @@
 
 ##Load needed libraries
 library(shiny)
-
+library(shinythemes)
+library(tidyverse)
 
 ##Define UI using NavbarPage layout
 
 shinyUI(navbarPage("Project 3",
-
+  
+  theme = shinytheme("cerulean"),
+  
   tabPanel("About"),
   tabPanel("Data"),
   tabPanel("Data Exploration"),
