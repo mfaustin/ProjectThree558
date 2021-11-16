@@ -18,8 +18,10 @@ library(tidyverse)
 
 shinyUI(navbarPage("Project 3",
   
+  ##Enable shiny theme
   theme = shinytheme("cerulean"),
   
+  ##Define Project Pages with tabPanel()
   tabPanel("About"),
   tabPanel("Data"),
   tabPanel("Data Exploration"),
