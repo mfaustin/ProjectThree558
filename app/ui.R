@@ -11,7 +11,9 @@
 
 ##Load needed libraries
 library(shiny)
+library(shinythemes)
 library(readxl)
+#library(DT)
 library(tidyverse)
 
 ##Read Data
@@ -27,8 +29,20 @@ shinyUI(navbarPage("Project 3",
   theme = shinytheme("cerulean"),
   
   ##Define Project Pages with tabPanel()
+  
+  ##About Page Section
   tabPanel("About"),
-  tabPanel("Data"),
+  
+  ##Data Page Section
+  tabPanel("Data",
+    fluidPage(
+     sidebarLayout(
+      sidebarPanel("sidebar panel"),
+      mainPanel("main panel",
+                dataTableOutput("tableResults"))
+     )  
+    )           
+           ),
   tabPanel("Data Exploration"),
   tabPanel("Modeling")
                    

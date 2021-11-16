@@ -20,5 +20,8 @@ fullData<-read_excel("../data/Concrete_Data.xls")
 shinyServer(function(input, output, session){
   
   
+  output$tableResults<- DT::renderDataTable({fullData},
+                        options = list(scrollY = '400px',
+                                    scrollX='200px',paging=FALSE) )
   
 })
