@@ -13,7 +13,7 @@
 library(shiny)
 library(shinythemes)
 library(readxl)
-#library(DT)
+library(DT)
 library(tidyverse)
 
 ##Read Data
