@@ -11,8 +11,13 @@
 
 ##Load needed libraries
 library(shiny)
-library(shinythemes)
+library(readxl)
 library(tidyverse)
+
+##Read Data
+fullData<-read_excel("../data/Concrete_Data.xls")
+
+
 
 ##Define UI using NavbarPage layout
 

@@ -10,8 +10,13 @@
 
 ##Load needed libraries
 library(shiny)
+library(readxl)
 library(tidyverse)
 
+##Read Data
+fullData<-read_excel("../data/Concrete_Data.xls")
+
+##Define Shiny Server
 shinyServer(function(input, output, session){
   
   
