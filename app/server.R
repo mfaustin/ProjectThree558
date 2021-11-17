@@ -33,16 +33,25 @@ fullData<-fullData %>%
 ##Define Shiny Server
 shinyServer(function(input, output, session){
   
-  observe({print(input$dtcolumns)})
+  observe({print(input$CementSlide  )})
+
   
+#####Code for Data Page Handling############################    
   subdata<-reactive({
-    subdata<-fullData %>% select(input$dtcolumns)
+    
+    if (input$subdata){
+     subdata<-fullData %>% select(input$dtcolumns)
+    }else{
+     fullData 
+    }
     
   })
   
   output$tableResults<- DT::renderDataTable({
-      newData<-subdata()},
+                        newData<-subdata()},
                         options = list(scrollY = '500px',
                                     scrollX='200px',paging=FALSE) )
-  
+
+###Add code for download data that uses subdata code  
+    
 })
