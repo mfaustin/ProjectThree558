@@ -38,7 +38,7 @@ shinyServer(function(input, output, session){
 
   
 #####Code for Data Page Handling############################    
-  subdata<-reactive({
+  dataOut<-reactive({
     
     if (input$subdata){
      subdata<-fullData %>%
@@ -60,12 +60,27 @@ shinyServer(function(input, output, session){
     }
     
   })
-  
+
+##Render Table using Reactive Data    
   output$tableResults<- DT::renderDataTable({
-                        newData<-subdata()},
+                        dataOut()},
                         options = list(scrollY = '500px',
                                     scrollX='200px',paging=FALSE) )
 
-###Add code for download data that uses subdata code  
+##Used download code example 
+##  https://shiny.rstudio.com/articles/download.html  
+##Setup to create .csv file based on Reactive Data  
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      if (input$subdata){
+        "ConcreteSubsetData.csv"
+      }else{
+        "ConcreteFullData.csv"
+      }
+    },
+    content = function(file) {
+      write.csv(dataOut(), file, row.names = FALSE)
+    }
+  )  
     
 })
