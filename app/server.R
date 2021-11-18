@@ -33,14 +33,28 @@ fullData<-fullData %>%
 ##Define Shiny Server
 shinyServer(function(input, output, session){
   
-  observe({print(input$CementSlide  )})
+  observe({print(input$BlastSlide[1] )})
+  observe({print(input$BlastSlide[2] )})
 
   
 #####Code for Data Page Handling############################    
   subdata<-reactive({
     
     if (input$subdata){
-     subdata<-fullData %>% select(input$dtcolumns)
+     subdata<-fullData %>%
+      filter(between(Cement,input$CementSlide[1],input$CementSlide[2])
+       & between(Blast_Furnace_Slag,input$BlastSlide[1],input$BlastSlide[2])
+       & between(Fly_Ash,input$FlySlide[1],input$FlySlide[2])
+       & between(Water,input$WaterSlide[1],input$WaterSlide[2])
+       & between(Superplasticizer,input$SuperSlide[1],input$SuperSlide[2])
+       & between(Coarse_Aggregate,input$CoarseSlide[1],input$CoarseSlide[2])
+       & between(Fine_Aggregate,input$FineSlide[1],input$FineSlide[2])
+       & between(Age,input$AgeSlide[1],input$AgeSlide[2])
+       & between(Concrete_Compressive_Strength,input$ConcreteSlide[1],input$ConcreteSlide[2])
+       
+              
+              ) %>%
+       select(input$dtcolumns)
     }else{
      fullData 
     }
