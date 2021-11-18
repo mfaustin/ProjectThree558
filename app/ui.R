@@ -64,7 +64,8 @@ shinyUI(navbarPage("Project 3",
       sidebarPanel(
         downloadButton("downloadData", "Download and Save Data"),
         checkboxInput("subdata", h4("Subset Data", style = "color:green;")),          conditionalPanel("input.subdata", 
-              checkboxGroupInput("dtcolumns", h4("Select Columns"),
+              checkboxGroupInput("dtcolumns", 
+                      h4("Select Columns to Display"),
                       choices = colnames(fullData),
                       selected = colnames(fullData)),
               h4("Adjust Slider Values to Filter Rows"),
@@ -121,7 +122,38 @@ shinyUI(navbarPage("Project 3",
            ),
   
   ##Data Exploration Page Section
-  tabPanel("Data Exploration"),
+  tabPanel("Data Exploration",
+   fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        radioButtons("radioGraph","Select Graph Type",
+          choices = list("Scatter Plot" = 1, "Correlation Plot" = 2),
+          selected = 1
+        ),
+        conditionalPanel(
+          "input.radioGraph == 1",
+          h4("Scatter Plot Variable Selection"),
+          selectInput("selectY","Select Y Axis Variable",
+                  choices = colnames(fullData),
+                  selected = "Concrete_Compressive_Strength"),
+          selectInput("selectX","Select X Axis Variable",
+                      choices = colnames(fullData),
+                      selected = "Age")
+        ),
+        conditionalPanel(
+          "input.radioGraph == 2",
+          h4("Correlation Plot Variable Selection"),
+          checkboxGroupInput("corSelect", "Correlation Variables",
+                             choices = colnames(fullData),
+                             selected = colnames(fullData)),
+        )
+      ),
+      mainPanel("main panel",
+        plotOutput("PlotOut")
+      )
+    )   
+   )         
+          ),
   
   ##Modeling Page Section
   tabPanel("Modeling",

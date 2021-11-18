@@ -12,6 +12,7 @@
 library(shiny)
 library(readxl)
 library(tidyverse)
+library(corrplot)
 
 ##Read Data
 fullData<-read_excel("../data/Concrete_Data.xls")
@@ -32,9 +33,6 @@ fullData<-fullData %>%
 
 ##Define Shiny Server
 shinyServer(function(input, output, session){
-  
-  observe({print(input$BlastSlide[1] )})
-  observe({print(input$BlastSlide[2] )})
 
   
 #####Code for Data Page Handling############################
@@ -94,5 +92,32 @@ shinyServer(function(input, output, session){
       write_csv(dataOut(), file)
     }
   )  
-    
+
+  
+#####Code for Data Exploration Page Handling#########################
+
+  
+  observe({print(input$dtcolumns )})
+  observe({print(input$corSelect )})  
+  
+output$PlotOut <-renderPlot({
+  if (input$radioGraph==1){
+    g <- ggplot(fullData, 
+                aes(x = !!sym(input$selectX),
+                    y = !!sym(input$selectY))) 
+    g + geom_point()
+  } else {
+    corrData<-fullData %>% select(input$corSelect)
+    Correlation<-cor(corrData,method = "spearman")
+    #corrplot(Correlation)
+    corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = .70)
+    corrplot(Correlation,type="lower",method="number",
+             add=TRUE,diag=FALSE,tl.pos="n",tl.cex = .70,number.cex = .75)
+  }
+  
+  
+})    
+
+#  	g <- ggplot(newData, aes(x = bodywt, y = sleep_total))  
+  
 })
