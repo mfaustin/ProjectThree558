@@ -37,9 +37,22 @@ shinyServer(function(input, output, session){
   observe({print(input$BlastSlide[2] )})
 
   
-#####Code for Data Page Handling############################    
+#####Code for Data Page Handling############################
+  
+  #create title text 
+  output$DataTitle <- renderUI({
+    if (input$subdata){
+      subtext<-"Subsetting"
+    }else{
+      subtext<-"All"
+    }
+    text <- paste0("Concrete Compressive Strength ",subtext," Data")
+    h1(text)
+  })
+  
   dataOut<-reactive({
-    
+    ##if subsetting is checked first do filtering
+    ##  then do column selection
     if (input$subdata){
      subdata<-fullData %>%
       filter(between(Cement,input$CementSlide[1],input$CementSlide[2])
@@ -50,12 +63,10 @@ shinyServer(function(input, output, session){
        & between(Coarse_Aggregate,input$CoarseSlide[1],input$CoarseSlide[2])
        & between(Fine_Aggregate,input$FineSlide[1],input$FineSlide[2])
        & between(Age,input$AgeSlide[1],input$AgeSlide[2])
-       & between(Concrete_Compressive_Strength,input$ConcreteSlide[1],input$ConcreteSlide[2])
-       
-              
-              ) %>%
+       & between(Concrete_Compressive_Strength,input$ConcreteSlide[1]        ,input$ConcreteSlide[2])) %>%
        select(input$dtcolumns)
     }else{
+     ##Return all data otherwise
      fullData 
     }
     
@@ -65,7 +76,8 @@ shinyServer(function(input, output, session){
   output$tableResults<- DT::renderDataTable({
                         dataOut()},
                         options = list(scrollY = '500px',
-                                    scrollX='200px',paging=FALSE) )
+                                    scrollX='200px',paging=FALSE,
+                                    searching=FALSE) )
 
 ##Used download code example 
 ##  https://shiny.rstudio.com/articles/download.html  
@@ -79,7 +91,7 @@ shinyServer(function(input, output, session){
       }
     },
     content = function(file) {
-      write.csv(dataOut(), file, row.names = FALSE)
+      write_csv(dataOut(), file)
     }
   )  
     

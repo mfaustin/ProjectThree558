@@ -59,14 +59,15 @@ shinyUI(navbarPage("Project 3",
   ##Data Page Section
   tabPanel("Data",
     fluidPage(
+     uiOutput("DataTitle"),  
      sidebarLayout(
-      sidebarPanel("sidebar panel",
-        downloadButton("downloadData", "Download Data"),           
+      sidebarPanel(
+        downloadButton("downloadData", "Download and Save Data"),
         checkboxInput("subdata", h4("Subset Data", style = "color:green;")),          conditionalPanel("input.subdata", 
               checkboxGroupInput("dtcolumns", h4("Select Columns"),
                       choices = colnames(fullData),
                       selected = colnames(fullData)),
-              h4("Filter Rows by Using Slider Values"),
+              h4("Adjust Slider Values to Filter Rows"),
               sliderInput("CementSlide","Cement Range",
                     min = min(fullData$Cement),
                     max = max(fullData$Cement),
@@ -113,7 +114,7 @@ shinyUI(navbarPage("Project 3",
                             max(fullData$Concrete_Compressive_Strength)))
               )
       ),
-      mainPanel("main panel",
+      mainPanel(
                 dataTableOutput("tableResults"))
      )  
     )           
