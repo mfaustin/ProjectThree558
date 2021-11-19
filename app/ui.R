@@ -176,7 +176,7 @@ shinyUI(navbarPage("Project 3",
       mainPanel("main panel",
         plotOutput("PlotOut"),
         br(),
-        tableOutput("numfiveOut")
+        tableOutput("numberOut")
       )
     )   
    )         

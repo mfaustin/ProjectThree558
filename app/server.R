@@ -121,13 +121,28 @@ output$PlotOut <-renderPlot({
   observe({print(input$dtcolumns )})
   observe({print(input$corSelect )})
   
-  output$numfiveOut <- renderTable({
-    fullData %>% select(input$fiveSelect) %>%
-      summary() %>%
-      as.data.frame() %>%
+  output$numberOut <- renderTable({
+    if (input$radioNum==1){    
+     fullData %>% select(input$fiveSelect) %>%
+      summary() %>% as.data.frame() %>%
       separate(Freq, c("Stat", "Value"), sep=":") %>%
       pivot_wider(names_from =Stat, values_from = Value) %>%
       select(-Var1,-`Mean   `) %>% rename(Variable=Var2)
+    } else if(input$radioNum==2) {
+      threedata<-fullData %>% select(input$threeSelect)
+      outSum<-apply(X = select(threedata,everything()), MARGIN = 2,
+            FUN = function(x) {
+              temp <- c(mean(x), sd(x), IQR(x))
+              names(temp) <- c("mean", "sd","IQR")
+              temp
+            }
+      )
+      as.data.frame(outSum)  %>% rownames_to_column(var = "Statistic")
+      
+    }
+    
+    #sapply(fullData, function(x) 
+    #  list(means = mean(x), sds = sd(x), IQR = IQR(x)))
       
   })
   
