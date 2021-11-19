@@ -14,6 +14,7 @@ library(readxl)
 library(tidyverse)
 library(corrplot)
 
+
 ##Read Data
 fullData<-read_excel("../data/Concrete_Data.xls")
 
@@ -97,9 +98,7 @@ shinyServer(function(input, output, session){
 #####Code for Data Exploration Page Handling#########################
 
   
-  observe({print(input$dtcolumns )})
-  observe({print(input$corSelect )})  
-  
+##Graphical Summary Section  
 output$PlotOut <-renderPlot({
   if (input$radioGraph==1){
     g <- ggplot(fullData, 
@@ -118,6 +117,20 @@ output$PlotOut <-renderPlot({
   
 })    
 
-#  	g <- ggplot(newData, aes(x = bodywt, y = sleep_total))  
+  ##Numerical Summary Section  
+  observe({print(input$dtcolumns )})
+  observe({print(input$corSelect )})
+  
+  output$numfiveOut <- renderTable({
+    fullData %>% select(input$fiveSelect) %>%
+      summary() %>%
+      as.data.frame() %>%
+      separate(Freq, c("Stat", "Value"), sep=":") %>%
+      pivot_wider(names_from =Stat, values_from = Value) %>%
+      select(-Var1,-`Mean   `) %>% rename(Variable=Var2)
+      
+  })
+  
+
   
 })

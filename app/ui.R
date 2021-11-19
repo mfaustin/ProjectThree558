@@ -126,6 +126,7 @@ shinyUI(navbarPage("Project 3",
    fluidPage(
     sidebarLayout(
       sidebarPanel(
+        h4("Graphical Summaries"),
         radioButtons("radioGraph","Select Graph Type",
           choices = list("Scatter Plot" = 1, "Correlation Plot" = 2),
           selected = 1
@@ -146,10 +147,36 @@ shinyUI(navbarPage("Project 3",
           checkboxGroupInput("corSelect", "Correlation Variables",
                              choices = colnames(fullData),
                              selected = colnames(fullData)),
+        ),
+        hr(),
+        h4("Numerical Summaries"),
+        radioButtons("radioNum","Select Numical Summary Type",
+              choices = list("Five Number Summary" = 1,
+                             "Mean, SD, IQR Summary" = 2,
+                             "Contingency Table" = 3),
+              selected = 1
+        ),
+        conditionalPanel(
+          "input.radioNum == 1",
+          h4("Five Number Summary Variable Selection"),
+          checkboxGroupInput("fiveSelect", "Summary Variables",
+                             choices = colnames(fullData),
+                             selected = colnames(fullData)),
+        ),
+        conditionalPanel(
+          "input.radioNum == 2",
+          h4("Mean, SD, IQR Summary Variable Selection"),
+          checkboxGroupInput("threeSelect", "Summary Variables",
+                             choices = colnames(fullData),
+                             selected = colnames(fullData)),
         )
+
+
       ),
       mainPanel("main panel",
-        plotOutput("PlotOut")
+        plotOutput("PlotOut"),
+        br(),
+        tableOutput("numfiveOut")
       )
     )   
    )         
