@@ -118,8 +118,8 @@ output$PlotOut <-renderPlot({
 })    
 
   ##Numerical Summary Section  
-  observe({print(input$dtcolumns )})
-  observe({print(input$corSelect )})
+  #observe({print(input$dtcolumns )})
+  #observe({print(input$corSelect )})
   
   output$numberOut <- renderTable({
     if (input$radioNum==1){    
@@ -129,15 +129,16 @@ output$PlotOut <-renderPlot({
       pivot_wider(names_from =Stat, values_from = Value) %>%
       select(-Var1,-`Mean   `) %>% rename(Variable=Var2)
     } else if(input$radioNum==2) {
-      threedata<-fullData %>% select(input$threeSelect)
-      outSum<-apply(X = select(threedata,everything()), MARGIN = 2,
+      outSummary<-apply(X = select(fullData,all_of(input$threeSelect))
+                    , MARGIN = 2,
             FUN = function(x) {
               temp <- c(mean(x), sd(x), IQR(x))
               names(temp) <- c("mean", "sd","IQR")
               temp
             }
       )
-      as.data.frame(outSum)  %>% rownames_to_column(var = "Statistic")
+      as.data.frame(t(as.data.frame(outSummary))) %>% 
+          rownames_to_column(var = "Variable")
       
     }
     
