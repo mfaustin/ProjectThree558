@@ -126,6 +126,20 @@ shinyUI(navbarPage("Project 3",
    fluidPage(
     sidebarLayout(
       sidebarPanel(
+        checkboxInput("filterData", h4("Filter Data")),
+        conditionalPanel(
+          "input.filterData==1",
+          h5("Filter Data for ALL Sumamries"),
+          radioButtons("superAdded","Superplastizer Added",
+            choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
+            selected = 1
+          ),
+          checkboxGroupInput("ratioSelect",
+            "Coarse to Fine Aggregate Ratio",
+            choices = list("<1","1.0 <= 1.2","1.2 <= 1.6",">1.6")
+          )
+        ),
+        hr(),
         h4("Graphical Summaries"),
         radioButtons("radioGraph","Select Graph Type",
           choices = list("Scatter Plot" = 1, "Correlation Plot" = 2),
