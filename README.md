@@ -5,7 +5,7 @@ Mark Austin
 
 ## Purpose
 
-This App allows the user to interactively explore Concrete Compressive Strength data both as raw data and in select statistical models.  The data source used is the [Concrete Compressive Strength Data Set](https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength) from he UCI machine learning repository.  
+This App allows the user to interactively explore Concrete Compressive Strength data both as raw data and in select statistical models.  The data source used is the [Concrete Compressive Strength Data Set](https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength) from the UCI machine learning repository.  
 
 The App has pages for Data Table viewing and saving, Data Exploration, and Modeling.  All those pages give the user an interactive experience using R Shiny Functionality.  
 
