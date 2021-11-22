@@ -46,13 +46,32 @@ shinyUI(navbarPage("Project 3",
   tabPanel("About",
     ##Using fluid page for needed About elements       
     fluidPage(
-      h2("App's Purpose"),
-      p("some sample text very long foo long foo long foo long"),
+      h2("Purpose"),
+      h4("This App allows the user to interactively explore Concrete Compressive Strength data both as raw data and in select statistical models.  ",a(href="https://en.wikipedia.org/wiki/Compressive_strength","Compressive strength"), "measures how much load can be handled by an object being pushed together."),
       h2("Project Data"),
-      p("describe data"),
-      h2("App Pages"),
-      p("describe each page"),
-      p("add an image")
+      h4("This project explores the", a(href="https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength", "Concrete Compressive Strength"),"  data set available in the UCI machine learning repository.  The data set was originally published in article I-Cheng Yeh, \"Modeling of strength of high performance concrete using artificial neural networks,\" Cement and Concrete Research, Vol. 28, No. 12, pp. 1797-1808 (1998)."),
+      h4("The data are all quantitative.  This data set presents a regression problem with concrete compressive strength as the response variable.  Higher strength values are desirable in this scenario."),
+      h4("The data set has 8 quantitative predictor variables, 1 quantitative response variable, and 1030 observations.  A variable list with variable name and units follows:"),
+      tags$ul(
+       tags$li(code("Cement"),"kg in a cubic meter mixture"),
+       tags$li(code("Blast_Furnace_Slag"),"kg in a cubic meter mixture"),
+       tags$li(code("Fly_Ash"),"kg in a cubic meter mixture"),
+       tags$li(code("Water"),"kg in a cubic meter mixture"),
+       tags$li(code("Superplasticizer"),"kg in a cubic meter mixture"),
+       tags$li(code("Coarse_Aggregate"),"kg in a cubic meter mixture"),
+       tags$li(code("Fine_Aggregate"),"kg in a cubic meter mixture"),
+       tags$li(code("Age"),"Days"),
+       tags$li(code("Concrete_Compressive_Strength"),"MPa, megapascals"),
+      ),
+      h2("Page Descriptions"),
+      h4("The",strong(" Data Page")," presents a scrollable data view.  Options are available to subset the data view for both columns and rows.  Optionally, the current data view can be downloaded and saved."),
+      h4("The",strong(" Data Exploration Page")," displays both graphical and numeric summaries with several different summary choices.  Data for summaries can be subset for certain columns and row values."),
+      h4("The",strong(" Modeling Page")," fits mulitple regression, regression tree, and random forest models.  This page is divided into three tabs.  The Info tab explains the models.  The Fitting Tab allows the user to select criteria for fitting models.  The Prediction Tab uses a fitted model to let the user select predictor values and obtain predictions for concrete compression strength."),
+      hr(),
+      p("An excavator-mounted hydraulic jackhammer being used to break up concrete. Public Domain.  Source:",
+        a(href="https://commons.wikimedia.org/wiki/File:Excavator_jackhammer.jpg","Wikimedia Commons")
+      ),
+      img(src="Excavator_jackhammer.jpg"),
     )
   ),
   
