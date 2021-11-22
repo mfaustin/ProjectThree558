@@ -15,13 +15,13 @@ The App has pages for Data Table viewing and saving, Data Exploration, and Model
 The following R packages are required to run R code used in this
 project.
 
--   `shiny`
+-   `shiny` The shiny package is used to provide interactive App capacities.  
 
--   `shinythemes`
+-   `shinythemes` The shinythemes package is used to apply one of the themes to enhance presentation.  
 
--   `readxl`
+-   `readxl` The readxl package is used to read Microsoft Excel data.  
 
--   `DT`
+-   `DT` The DT package is used for [DataTables](https://datatables.net/) functionality in handling tables.  
 
 -   `tidyverse` The tidyverse package is used for data handling and
     plotting.  
