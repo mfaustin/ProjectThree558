@@ -219,9 +219,34 @@ shinyUI(navbarPage("Project 3",
   tabPanel("Modeling",
    mainPanel(
       tabsetPanel(
-        tabPanel("Modeling Info"),
-        tabPanel("Model Fitting"),
-        tabPanel("Prediction")
+        tabPanel("Modeling Info",
+          fluidPage(
+            h2("Model Explanations"),
+            h4("Explain 1"),
+            h4("Explain 2"),
+            h4("Explain 3")
+          )         
+        ),
+        tabPanel("Model Fitting",
+         fluidPage(
+           sidebarLayout(
+             sidebarPanel(
+               h3("Holding for Model Controls")
+             ),
+             mainPanel("Model Output Goes Here")
+           )
+          )
+        ),
+        tabPanel("Prediction",
+         fluidPage(
+          sidebarLayout(
+            sidebarPanel(
+              h3("Holding for Prediction Controls")
+            ),
+            mainPanel("Prediction Output Goes Here")
+            )
+          )        
+        )
       )
    )           
   )

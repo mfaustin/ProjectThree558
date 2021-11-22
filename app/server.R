@@ -97,6 +97,14 @@ shinyServer(function(input, output, session){
   
 #####Code for Data Exploration Page Handling#########################
 
+  observe({print(input$superAdded )})
+  observe({print(input$ratioSelect )})
+  
+  ##Summary data filtering 
+  dataExplore<-reactive({
+   
+    
+  })  
   
 ##Graphical Summary Section  
 output$PlotOut <-renderPlot({
@@ -118,9 +126,6 @@ output$PlotOut <-renderPlot({
 })    
 
   ##Numerical Summary Section  
-  #observe({print(input$dtcolumns )})
-  #observe({print(input$corSelect )})
-  
   output$numberOut <- renderTable({
     if (input$radioNum==1){    
      fullData %>% select(input$fiveSelect) %>%
