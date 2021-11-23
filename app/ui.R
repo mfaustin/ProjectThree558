@@ -151,7 +151,7 @@ shinyUI(navbarPage("Project 3",
           h5("Filter Data for ALL Sumamries"),
           radioButtons("superAdded","Superplastizer Added",
             choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
-            selected = 1
+            selected = 3
           ),
           checkboxGroupInput("ratioSelect",
             "Coarse to Fine Aggregate Ratio",
@@ -172,7 +172,7 @@ shinyUI(navbarPage("Project 3",
                   selected = "Concrete_Compressive_Strength"),
           selectInput("selectX","Select X Axis Variable",
                       choices = colnames(fullData),
-                      selected = "Age")
+                      selected = "Cement")
         ),
         conditionalPanel(
           "input.radioGraph == 2",
@@ -206,9 +206,10 @@ shinyUI(navbarPage("Project 3",
 
 
       ),
-      mainPanel("main panel",
+      mainPanel(
         plotOutput("PlotOut"),
         br(),
+        hr(),
         tableOutput("numberOut")
       )
     )   
