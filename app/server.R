@@ -48,7 +48,7 @@ shinyServer(function(input, output, session){
     text <- paste0("Concrete Compressive Strength ",subtext," Data")
     h1(text)
   })
-  observe({print(input$filterData)})
+
   dataOut<-reactive({
     ##if subsetting is checked first do filtering
     ##  then do column selection
@@ -154,8 +154,8 @@ shinyServer(function(input, output, session){
 #    observe({print(input$superAdded )})
 #    observe({print(input$cfSlide )})
     
-    observe({print(dataExploreOut)})
-    observe({print(summary(dataExploreOut$cfRatio))})
+#    observe({print(dataExploreOut)})
+#    observe({print(summary(dataExploreOut$cfRatio))})
     dataExploreOut
   } else{
     fullData
@@ -170,13 +170,17 @@ output$PlotOut <-renderPlot({
                 aes(x = !!sym(input$selectX),
                     y = !!sym(input$selectY))) 
     g + geom_point()
-  } else {
+  } else if (input$radioGraph==2) {
     corrData<-summaryData %>% select(input$corSelect)
     Correlation<-cor(corrData,method = "spearman")
     #corrplot(Correlation)
     corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = 0.9)
     corrplot(Correlation,type="lower",method="number",
              add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
+  } else{
+    g <- ggplot(summaryData,aes(x=!!sym(input$selectHVar)))
+    g + geom_histogram(bins=40,color = "brown", fill = "green", 
+                       size = 1)
   }
   
   
