@@ -174,9 +174,9 @@ output$PlotOut <-renderPlot({
     corrData<-summaryData %>% select(input$corSelect)
     Correlation<-cor(corrData,method = "spearman")
     #corrplot(Correlation)
-    corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = .70)
+    corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = 0.9)
     corrplot(Correlation,type="lower",method="number",
-             add=TRUE,diag=FALSE,tl.pos="n",tl.cex = .70,number.cex = .75)
+             add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
   }
   
   

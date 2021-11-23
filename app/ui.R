@@ -161,12 +161,6 @@ shinyUI(navbarPage("Project 3",
                        choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
                        selected = 3
           ),
-          checkboxGroupInput("ratioSelect",
-            "Coarse to Fine Aggregate Ratio",
-            choices = list("<1" = 1,"1.0 to 1.2" = 2,
-                           "1.2 to 1.6" = 3,">1.6" = 4),
-            selected = list(1,2,3,4)
-          ),
           uiOutput("slideRatio")
         ),
         hr(),
