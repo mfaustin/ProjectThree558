@@ -145,18 +145,29 @@ shinyUI(navbarPage("Project 3",
    fluidPage(
     sidebarLayout(
       sidebarPanel(
-        checkboxInput("filterData", h4("Filter Data")),
+        checkboxInput("filterData", h4("Filter Data Rows (Selections Filter Data for ALL Summaries)")),
         conditionalPanel(
           "input.filterData==1",
-          h5("Filter Data for ALL Sumamries"),
+#          h4("Selections Filter Data for ALL Summaries"),
           radioButtons("superAdded","Superplastizer Added",
             choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
             selected = 3
           ),
+          radioButtons("blastAdded","Blast_Furnace_Slag Added",
+                       choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
+                       selected = 3
+          ),
+          radioButtons("flyAdded","Fly_Ash Added",
+                       choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
+                       selected = 3
+          ),
           checkboxGroupInput("ratioSelect",
             "Coarse to Fine Aggregate Ratio",
-            choices = list("<1","1.0 <= 1.2","1.2 <= 1.6",">1.6")
-          )
+            choices = list("<1" = 1,"1.0 to 1.2" = 2,
+                           "1.2 to 1.6" = 3,">1.6" = 4),
+            selected = list(1,2,3,4)
+          ),
+          uiOutput("slideRatio")
         ),
         hr(),
         h4("Graphical Summaries"),

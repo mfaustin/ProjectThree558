@@ -48,7 +48,7 @@ shinyServer(function(input, output, session){
     text <- paste0("Concrete Compressive Strength ",subtext," Data")
     h1(text)
   })
-  
+  observe({print(input$filterData)})
   dataOut<-reactive({
     ##if subsetting is checked first do filtering
     ##  then do column selection
@@ -96,25 +96,82 @@ shinyServer(function(input, output, session){
 
   
 #####Code for Data Exploration Page Handling#########################
-
-  observe({print(input$superAdded )})
-  observe({print(input$ratioSelect )})
   
+  ##Adding Ratio Data for Summaries
+  ratioData<-reactive({
+    dataExploreOut<-fullData %>%
+      mutate(cfRatio=round(Coarse_Aggregate/Fine_Aggregate,digits=2))%>%
+      select(Coarse_Aggregate,Fine_Aggregate,cfRatio,everything()) 
+  })
+  
+  
+  ##Dynamic Ratio Slider Render for Filtering
+  output$slideRatio<-renderUI({
+    ratioOut<-ratioData()
+    sliderInput("cfSlide","Coarse to Fine Aggregate Ratio",
+                min = min(ratioOut$cfRatio),
+                max = max(ratioOut$cfRatio),
+                value = c(min(ratioOut$cfRatio),
+                          max(ratioOut$cfRatio)))
+    })
+     
   ##Summary data filtering 
   dataExplore<-reactive({
-   
+  if (input$filterData){  
+   fullOut<-ratioData()
+   if (input$superAdded==1){
+     dataExploreOut<-fullOut %>%
+        filter(Superplasticizer==0)
+   }else if (input$superAdded==2){
+     dataExploreOut<-fullOut %>%
+       filter(Superplasticizer>0)
+   } else{
+     dataExploreOut<-fullOut
+   }
     
+    if (input$blastAdded==1){
+      dataExploreOut<-dataExploreOut %>%
+        filter(Blast_Furnace_Slag==0)
+    }else if (input$blastAdded==2){
+      dataExploreOut<-dataExploreOut %>%
+        filter(Blast_Furnace_Slag>0)
+    }     
+    
+    if (input$flyAdded==1){
+      dataExploreOut<-dataExploreOut %>%
+        filter(Fly_Ash==0)
+    }else if (input$flyAdded==2){
+      dataExploreOut<-dataExploreOut %>%
+        filter(Fly_Ash>0)
+    }
+     ##Need to make sure the Slider has rendered before
+     ## attempting to filter so use req()
+     req(input$cfSlide)
+    dataExploreOut<-dataExploreOut %>%
+      filter(between(cfRatio,input$cfSlide[1],input$cfSlide[2]))   
+
+   
+#    observe({print(input$superAdded )})
+#    observe({print(input$cfSlide )})
+    
+    observe({print(dataExploreOut)})
+    observe({print(summary(dataExploreOut$cfRatio))})
+    dataExploreOut
+  } else{
+    fullData
+  }  
   })  
   
 ##Graphical Summary Section  
 output$PlotOut <-renderPlot({
+  summaryData<-dataExplore()
   if (input$radioGraph==1){
-    g <- ggplot(fullData, 
+    g <- ggplot(summaryData, 
                 aes(x = !!sym(input$selectX),
                     y = !!sym(input$selectY))) 
     g + geom_point()
   } else {
-    corrData<-fullData %>% select(input$corSelect)
+    corrData<-summaryData %>% select(input$corSelect)
     Correlation<-cor(corrData,method = "spearman")
     #corrplot(Correlation)
     corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = .70)
@@ -127,14 +184,15 @@ output$PlotOut <-renderPlot({
 
   ##Numerical Summary Section  
   output$numberOut <- renderTable({
+    summaryData<-dataExplore()
     if (input$radioNum==1){    
-     fullData %>% select(input$fiveSelect) %>%
+      summaryData %>% select(input$fiveSelect) %>%
       summary() %>% as.data.frame() %>%
       separate(Freq, c("Stat", "Value"), sep=":") %>%
       pivot_wider(names_from =Stat, values_from = Value) %>%
       select(-Var1,-`Mean   `) %>% rename(Variable=Var2)
     } else if(input$radioNum==2) {
-      outSummary<-apply(X = select(fullData,all_of(input$threeSelect))
+      outSummary<-apply(X = select(summaryData,all_of(input$threeSelect))
                     , MARGIN = 2,
             FUN = function(x) {
               temp <- c(mean(x), sd(x), IQR(x))
