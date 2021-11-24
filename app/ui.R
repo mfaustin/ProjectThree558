@@ -157,10 +157,6 @@ shinyUI(navbarPage("Project 3",
                        choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
                        selected = 3
           ),
-          radioButtons("flyAdded","Fly_Ash Added",
-                       choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
-                       selected = 3
-          ),
           uiOutput("slideRatio")
         ),
         hr(),
@@ -216,7 +212,14 @@ shinyUI(navbarPage("Project 3",
           checkboxGroupInput("threeSelect", "Summary Variables",
                              choices = colnames(fullData),
                              selected = colnames(fullData)),
-        )
+        ),
+       conditionalPanel(
+          "input.radioNum == 3",
+          h4("Contingency Table Variable Selection"),
+          checkboxGroupInput("contSelect", "Summary Variables",
+                     choices = colnames(fullData),
+                     selected = colnames(fullData)),
+)
 
 
       ),

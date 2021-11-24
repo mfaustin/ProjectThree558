@@ -137,13 +137,6 @@ shinyServer(function(input, output, session){
         filter(Blast_Furnace_Slag>0)
     }     
     
-    if (input$flyAdded==1){
-      dataExploreOut<-dataExploreOut %>%
-        filter(Fly_Ash==0)
-    }else if (input$flyAdded==2){
-      dataExploreOut<-dataExploreOut %>%
-        filter(Fly_Ash>0)
-    }
      ##Need to make sure the Slider has rendered before
      ## attempting to filter so use req()
      req(input$cfSlide)
@@ -166,18 +159,37 @@ shinyServer(function(input, output, session){
 output$PlotOut <-renderPlot({
   summaryData<-dataExplore()
   if (input$radioGraph==1){
+    ##Scatterplot section
     g <- ggplot(summaryData, 
                 aes(x = !!sym(input$selectX),
                     y = !!sym(input$selectY))) 
     g + geom_point()
   } else if (input$radioGraph==2) {
+    ##Corrplot section
+#    observe({print(summaryData)})
     corrData<-summaryData %>% select(input$corSelect)
+    #observe({print(corrData)})
+    ##Special handling for variables filtered to be all 0
+    ## in the filtering section.  This condition would lead
+    ## to 0 SD so these variables need to be removed before
+    ## correlation is computed
+    if(input$filterData){
+      if (input$superAdded==1 & 
+          ("Superplasticizer" %in% names(corrData))){
+         corrData<-corrData %>% select(-Superplasticizer)
+      }
+      if (input$blastAdded==1 & 
+          ("Blast_Furnace_Slag" %in% names(corrData))){
+          corrData<-corrData %>% select(-Blast_Furnace_Slag)
+      }
+    }  
+    #observe({print(corrData)})
     Correlation<-cor(corrData,method = "spearman")
-    #corrplot(Correlation)
     corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = 0.9)
     corrplot(Correlation,type="lower",method="number",
              add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
   } else{
+    ##Histogram section
     g <- ggplot(summaryData,aes(x=!!sym(input$selectHVar)))
     g + geom_histogram(bins=40,color = "brown", fill = "green", 
                        size = 1)
@@ -206,14 +218,13 @@ output$PlotOut <-renderPlot({
       )
       as.data.frame(t(as.data.frame(outSummary))) %>% 
           rownames_to_column(var = "Variable")
-      
+    } else{
+      summaryData
     }
     
-    #sapply(fullData, function(x) 
-    #  list(means = mean(x), sds = sd(x), IQR = IQR(x)))
-      
   })
   
-
+#####Code for Modeling Page Handling#########################
+  
   
 })
