@@ -40,7 +40,6 @@ install.packages(c("shiny","shinythemes","readxl","DT","tidyverse","caret","corr
 ## Code to run this App
 
 ``` r
-
-
+shiny::runGitHub('ProjectThree558',username = 'mfaustin', subdir = 'app', ref = 'main')
 ```
 
