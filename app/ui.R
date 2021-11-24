@@ -196,7 +196,7 @@ shinyUI(navbarPage("Project 3",
         radioButtons("radioNum","Select Numical Summary Type",
               choices = list("Five Number Summary" = 1,
                              "Mean, SD, IQR Summary" = 2,
-                             "Contingency Table" = 3),
+                             "Variance-Covariance Table" = 3),
               selected = 1
         ),
         conditionalPanel(
@@ -215,7 +215,7 @@ shinyUI(navbarPage("Project 3",
         ),
        conditionalPanel(
           "input.radioNum == 3",
-          h4("Contingency Table Variable Selection"),
+          h4("Variance-Covariance Table Variable Selection"),
           checkboxGroupInput("contSelect", "Summary Variables",
                      choices = colnames(fullData),
                      selected = colnames(fullData)),
@@ -224,9 +224,11 @@ shinyUI(navbarPage("Project 3",
 
       ),
       mainPanel(
+        htmlOutput("graphText"),
         plotOutput("PlotOut"),
         br(),
         hr(),
+        htmlOutput("numberText"),
         tableOutput("numberOut")
       )
     )   

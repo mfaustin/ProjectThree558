@@ -97,6 +97,8 @@ shinyServer(function(input, output, session){
   
 #####Code for Data Exploration Page Handling#########################
   
+
+  
   ##Adding Ratio Data for Summaries
   ratioData<-reactive({
     dataExploreOut<-fullData %>%
@@ -160,12 +162,14 @@ output$PlotOut <-renderPlot({
   summaryData<-dataExplore()
   if (input$radioGraph==1){
     ##Scatterplot section
+    output$graphText<-  renderText({"<b>Scatter Plot<b>"})
     g <- ggplot(summaryData, 
                 aes(x = !!sym(input$selectX),
                     y = !!sym(input$selectY))) 
     g + geom_point()
   } else if (input$radioGraph==2) {
     ##Corrplot section
+    output$graphText<-  renderText({"<b>Correlation Plot<b>"})
 #    observe({print(summaryData)})
     corrData<-summaryData %>% select(input$corSelect)
     #observe({print(corrData)})
@@ -190,6 +194,7 @@ output$PlotOut <-renderPlot({
              add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
   } else{
     ##Histogram section
+    output$graphText<-  renderText({"<b>Histogram<b>"})
     g <- ggplot(summaryData,aes(x=!!sym(input$selectHVar)))
     g + geom_histogram(bins=40,color = "brown", fill = "green", 
                        size = 1)
@@ -201,13 +206,15 @@ output$PlotOut <-renderPlot({
   ##Numerical Summary Section  
   output$numberOut <- renderTable({
     summaryData<-dataExplore()
-    if (input$radioNum==1){    
+    if (input$radioNum==1){
+      output$numberText<-  renderText({"<b>Five Number Summary Table<b>"})
       summaryData %>% select(input$fiveSelect) %>%
       summary() %>% as.data.frame() %>%
       separate(Freq, c("Stat", "Value"), sep=":") %>%
       pivot_wider(names_from =Stat, values_from = Value) %>%
       select(-Var1,-`Mean   `) %>% rename(Variable=Var2)
     } else if(input$radioNum==2) {
+      output$numberText<-  renderText({"<b>Mean, SD, IQR Table<b>"})
       outSummary<-apply(X = select(summaryData,all_of(input$threeSelect))
                     , MARGIN = 2,
             FUN = function(x) {
@@ -219,7 +226,10 @@ output$PlotOut <-renderPlot({
       as.data.frame(t(as.data.frame(outSummary))) %>% 
           rownames_to_column(var = "Variable")
     } else{
-      summaryData
+      output$numberText<-  renderText({"<b>Variance-Covariance Table<b>"})
+      summaryData<-summaryData %>% select(input$contSelect)
+      covOut<-cov(summaryData)
+      covOut<-as.data.frame(covOut)%>%rownames_to_column(var = "Variable")
     }
     
   })
