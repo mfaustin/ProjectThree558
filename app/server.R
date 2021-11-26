@@ -13,6 +13,7 @@ library(shiny)
 library(readxl)
 library(tidyverse)
 library(corrplot)
+library(caret)
 
 
 ##Read Data
@@ -97,7 +98,6 @@ shinyServer(function(input, output, session){
   
 #####Code for Data Exploration Page Handling#########################
   
-
   
   ##Adding Ratio Data for Summaries
   ratioData<-reactive({
@@ -235,6 +235,45 @@ output$PlotOut <-renderPlot({
   })
   
 #####Code for Modeling Page Handling#########################
+ 
+  ##Use eventReactive() to Fit Models ONLY when button submitted
+  ##Multiple Linear Regression Model
   
   
+  ##Regression Tree Model
+  
+  
+  ##random forest model
+  rfModel <- eventReactive(input$submit,{
+    withProgress(message="Fitting Random Forest Model  ",
+                 detail = "\nThis may take a few minutes",
+                 value = NULL,{
+    
+    rfFit1 <- train(Concrete_Compressive_Strength ~ ., data = fullData,
+                    method = "rf",
+                    preProcess = c("center", "scale"),
+                    trControl = trainControl(method = "repeatedcv",
+                                             number = 5,repeats = 1),
+                    tuneGrid = data.frame(mtry = 1:8))
+    rfFit1
+  })    
+  })
+
+observeEvent(input$submit,{
+  print(rfModel())
+})  
+  
+output$modTest<-renderPrint({
+  rfModel()
+}) 
+
+output$rfPlot<-renderPlot({
+  rfImp <- varImp(rfModel(), scale = TRUE)
+  plot(rfImp, top = 5, main="Random Forest Model\n Importance Plot")
+  
+})
+
+
+
+    
 })

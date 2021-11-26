@@ -42,7 +42,7 @@ shinyUI(navbarPage("Project 3",
   
   ##Define Project Pages with tabPanel()
   
-  ##About Page Section
+######About Page Section###########################################
   tabPanel("About",
     ##Using fluid page for needed About elements       
     fluidPage(
@@ -75,7 +75,7 @@ shinyUI(navbarPage("Project 3",
     )
   ),
   
-  ##Data Page Section
+######Data Page Section#######################################
   tabPanel("Data",
     fluidPage(
      uiOutput("DataTitle"),  
@@ -140,7 +140,7 @@ shinyUI(navbarPage("Project 3",
     )           
            ),
   
-  ##Data Exploration Page Section
+#####Data Exploration Page Section################################
   tabPanel("Data Exploration",
    fluidPage(
     sidebarLayout(
@@ -235,7 +235,7 @@ shinyUI(navbarPage("Project 3",
    )         
           ),
   
-  ##Modeling Page Section
+######Modeling Page Section#####################################
   tabPanel("Modeling",
    mainPanel(
       tabsetPanel(
@@ -251,9 +251,13 @@ shinyUI(navbarPage("Project 3",
          fluidPage(
            sidebarLayout(
              sidebarPanel(
-               h3("Holding for Model Controls")
+               h3("Holding for Model Controls"),
+               actionButton("submit","Fit Models"),
              ),
-             mainPanel("Model Output Goes Here")
+             mainPanel("Model Output Goes Here",
+               verbatimTextOutput("modTest"),
+               plotOutput("rfPlot")
+             )
            )
           )
         ),
