@@ -245,8 +245,9 @@ output$PlotOut <-renderPlot({
   
   ##random forest model
   rfModel <- eventReactive(input$submit,{
-    withProgress(message="Fitting Random Forest Model  ",
-                 detail = "\nThis may take a few minutes",
+    withProgress(message=
+          "Fitting Random Forest Model.  This may take a few minutes  ",
+#                 detail = "\nThis may take a few minutes",
                  value = NULL,{
     
     rfFit1 <- train(Concrete_Compressive_Strength ~ ., data = fullData,
