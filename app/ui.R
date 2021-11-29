@@ -237,8 +237,9 @@ shinyUI(navbarPage("Project 3",
   
 ######Modeling Page Section#####################################
   tabPanel("Modeling",
-   mainPanel(
+   fluidPage(
       tabsetPanel(
+        ##Modeling Info Tab
         tabPanel("Modeling Info",
           fluidPage(
             h2("Model Explanations"),
@@ -247,11 +248,40 @@ shinyUI(navbarPage("Project 3",
             h4("Explain 3")
           )         
         ),
+        ##Model Fitting Tab
         tabPanel("Model Fitting",
          fluidPage(
            sidebarLayout(
              sidebarPanel(
-               h3("Holding for Model Controls"),
+               h4("Split Data into Training/Test Sets:"),
+               sliderInput("splitSlide",
+                  "Select Proportion of Data for Training Set
+                  (remainder is assigned to test set)",
+                  min=.50, max=.80,value = .70),
+               hr(),
+               h4("Cross Validation Values to Apply to ALL Models"),
+               selectInput("numFolds",
+                           "Select Number of Folds",
+                           choices = list("5"=5,"10"=10),
+                           selected = 5),
+               selectInput("numRepeats",
+                           "Select Number of Repeats",
+                           choices = list("1"=1,"2"=2,"3"=3),
+                           selected = 1),
+               hr(),
+               checkboxGroupInput("regVars", 
+                                  h4("Select Multiple Linear Regression Model Predictor Variables"),
+                                  choices = colnames(fullData)[1:8],
+                                  selected = colnames(fullData)[1:8]),
+               hr(),
+               checkboxGroupInput("treeVars", 
+                                  h4("Select Regresion Tree Model Predictor Variables"),
+                                  choices = colnames(fullData)[1:8],
+                                  selected = colnames(fullData)[1:8]),
+               h4("CP MAX Goes here"),
+               h4("CP increment goes here"),
+               hr(),
+               h4("Random Forest mtry goes here"),
                actionButton("submit","Fit Models"),
              ),
              mainPanel("Model Output Goes Here",
@@ -261,6 +291,7 @@ shinyUI(navbarPage("Project 3",
            )
           )
         ),
+        ##Model Prediction Tab
         tabPanel("Prediction",
          fluidPage(
           sidebarLayout(

@@ -235,28 +235,86 @@ output$PlotOut <-renderPlot({
   })
   
 #####Code for Modeling Page Handling#########################
+  
+####Code for Model Fitting Tab Part###########################  
  
+  ##Split data into train and test sets
+  ## with proportion based on user input
+  ##Only run when submit button selected
+  splitData <- eventReactive(input$submit,{
+    dataIndex <-createDataPartition(fullData$Concrete_Compressive_Strength,
+                                    p = input$splitSlide, list = FALSE)
+    dataTrain <-fullData[dataIndex,]
+    dataTest <-fullData[-dataIndex,]
+    list(dTrain = dataTrain, dTest=dataTest)    
+  })
+  
+   
   ##Use eventReactive() to Fit Models ONLY when button submitted
+
+    
   ##Multiple Linear Regression Model
+  regModel <- eventReactive(input$submit,{
+    splitResults <- splitData()
+    regForm<-reformulate(input$regVars,
+                         response="Concrete_Compressive_Strength")
+    withProgress(message=
+        "Fitting Mulitple Linear Regression Model.  This may take a few minutes  ",
+                value = NULL,{
+                   
+    regFit <- train(regForm, 
+                     data = splitResults$dTrain,
+                     method = "lm",
+                     preProcess = c("center", "scale"),
+                    trControl = trainControl(method = "repeatedcv",
+                                  number = as.numeric(input$numFolds),
+                                  repeats = as.numeric(input$numRepeats)))
+    regFit
+  })
+  })
   
+  observe({print(regModel())})
   
-  ##Regression Tree Model
+  ##Regression Tree Model  
+  treeModel <- eventReactive(input$submit,{
+    splitResults <- splitData()
+    treeForm<-reformulate(input$treeVars,
+                         response="Concrete_Compressive_Strength")
+    withProgress(message=
+                   "Fitting Regression Tree Model.  This may take a few minutes  ",
+                 value = NULL,{
+                   
+    treeFit <- train(treeForm, 
+                data = splitResults$dTrain,
+                method = "rpart",
+                preProcess = c("center", "scale"),
+                trControl = trainControl(method = "repeatedcv",
+                        number = as.numeric(input$numFolds),
+                       repeats = as.numeric(input$numRepeats)),
+                tuneGrid = data.frame(cp = seq(0,0.1, 0.01)))
+    treeFit
+  })
+  })  
   
+  observe({print(treeModel())})
   
   ##random forest model
   rfModel <- eventReactive(input$submit,{
+    splitResults <- splitData()
+    #observe({str(splitResults$dTrain)})
     withProgress(message=
           "Fitting Random Forest Model.  This may take a few minutes  ",
-#                 detail = "\nThis may take a few minutes",
                  value = NULL,{
     
-    rfFit1 <- train(Concrete_Compressive_Strength ~ ., data = fullData,
+    rfFit <- train(Concrete_Compressive_Strength ~ ., 
+                    data = splitResults$dTrain,
                     method = "rf",
                     preProcess = c("center", "scale"),
                     trControl = trainControl(method = "repeatedcv",
-                                             number = 5,repeats = 1),
+                                    number = as.numeric(input$numFolds),
+                                    repeats = as.numeric(input$numRepeats)),
                     tuneGrid = data.frame(mtry = 1:8))
-    rfFit1
+    rfFit
   })    
   })
 
