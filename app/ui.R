@@ -32,6 +32,8 @@ fullData<-fullData %>%
    Concrete_Compressive_Strength=`Concrete compressive strength(MPa, megapascals)`
   )
 
+## Vector to store range of predictor variables
+predVec<-c(1:8)
 
 ##Define UI using NavbarPage layout
 
@@ -278,10 +280,21 @@ shinyUI(navbarPage("Project 3",
                                   h4("Select Regresion Tree Model Predictor Variables"),
                                   choices = colnames(fullData)[1:8],
                                   selected = colnames(fullData)[1:8]),
-               h4("CP MAX Goes here"),
-               h4("CP increment goes here"),
+               selectInput("cpMax",
+                        "Select Max CP for Regression Tree Model",
+                        choices = list("0.10"=0.10,"0.15"=0.15,"0.20"=0.20),
+                        selected =0.10),
+               selectInput("cpIncrement",
+                        "Select CP Increment for Regression Tree Model",
+                        choices = list("0.01"=0.01,"0.001"=0.001),
+                        selected =0.01),
                hr(),
-               h4("Random Forest mtry goes here"),
+               checkboxGroupInput("rfVars", 
+                    h4("Select Random Forest Model Predictor Variables"),
+                                  choices = colnames(fullData)[1:8],
+                                  selected = colnames(fullData)[1:8]),
+               uiOutput("mtrySelect"),
+               hr(),
                actionButton("submit","Fit Models"),
              ),
              mainPanel("Model Output Goes Here",

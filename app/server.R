@@ -253,7 +253,7 @@ output$PlotOut <-renderPlot({
   ##Use eventReactive() to Fit Models ONLY when button submitted
 
     
-  ##Multiple Linear Regression Model
+  ##Fit Multiple Linear Regression Model
   regModel <- eventReactive(input$submit,{
     splitResults <- splitData()
     regForm<-reformulate(input$regVars,
@@ -275,7 +275,7 @@ output$PlotOut <-renderPlot({
   
   observe({print(regModel())})
   
-  ##Regression Tree Model  
+  ##Fit Regression Tree Model  
   treeModel <- eventReactive(input$submit,{
     splitResults <- splitData()
     treeForm<-reformulate(input$treeVars,
@@ -291,29 +291,43 @@ output$PlotOut <-renderPlot({
                 trControl = trainControl(method = "repeatedcv",
                         number = as.numeric(input$numFolds),
                        repeats = as.numeric(input$numRepeats)),
-                tuneGrid = data.frame(cp = seq(0,0.1, 0.01)))
+               tuneGrid = data.frame(cp = seq(0,
+                                          as.numeric(input$cpMax),
+                                          as.numeric(input$cpIncrement))))
     treeFit
   })
   })  
   
   observe({print(treeModel())})
   
-  ##random forest model
+  ##Create Dynamic Mtry Select Based on Number of Vars Chosen
+  output$mtrySelect <- renderUI({
+    numVars <- length(input$rfVars)
+    predVec <- c(1:numVars)
+    selectInput("mtryMax",
+                "Select Max MTRY for Random Forest Model",
+                choices = predVec,
+                selected = numVars)
+  })
+  
+  ##Fit random forest model
   rfModel <- eventReactive(input$submit,{
     splitResults <- splitData()
     #observe({str(splitResults$dTrain)})
+    rfForm<-reformulate(input$rfVars,
+                          response="Concrete_Compressive_Strength")
     withProgress(message=
           "Fitting Random Forest Model.  This may take a few minutes  ",
                  value = NULL,{
     
-    rfFit <- train(Concrete_Compressive_Strength ~ ., 
+    rfFit <- train(rfForm , 
                     data = splitResults$dTrain,
                     method = "rf",
                     preProcess = c("center", "scale"),
                     trControl = trainControl(method = "repeatedcv",
                                     number = as.numeric(input$numFolds),
                                     repeats = as.numeric(input$numRepeats)),
-                    tuneGrid = data.frame(mtry = 1:8))
+                tuneGrid = data.frame(mtry = 1:as.numeric(input$mtryMax)))
     rfFit
   })    
   })
@@ -331,6 +345,10 @@ output$rfPlot<-renderPlot({
   plot(rfImp, top = 5, main="Random Forest Model\n Importance Plot")
   
 })
+
+
+
+####Code for Prediction Tab Part########################### 
 
 
 
