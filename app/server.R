@@ -350,6 +350,109 @@ output$rfPlot<-renderPlot({
 
 ####Code for Prediction Tab Part########################### 
 
+##Render Dynamic UI so we'll have an initial message
+## saying models need to be fit before prediction occurs
+output$predModUI <- renderUI({
+  if (input$submit<1){
+    h4("Models Must be Fit Prior to Prediction")
+  } else {
+    radioButtons("radioModSelect","Select Model to use for Prediction",
+                 choices = list("Multiple Linear Regression" = 1, 
+                                "Regression Tree" = 2,
+                                "Random Forest" = 3),
+                 selected = 3
+    )
+  }
+})
+
+output$predVarOne <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("cementPred","Enter Cement Value",
+                 value = round(median(fullData$Cement)),
+                  min=0,max=round(max(fullData$Cement)))
+  }
+})
+
+output$predVarTwo <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("blastPred","Enter Blast_Furnace_Slag Value",
+                 value = round(median(fullData$Blast_Furnace_Slag)),
+                 min=0,max=round(max(fullData$Blast_Furnace_Slag)))
+  }
+})
+
+output$predVarThree <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("flyPred","Enter Fly_Ash Value",
+                 value = round(median(fullData$Fly_Ash)),
+                 min=0,max=round(max(fullData$Fly_Ash)))
+  }
+})
+
+output$predVarFour <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("waterPred","Enter Water Value",
+                 value = round(median(fullData$Water)),
+                 min=0,max=round(max(fullData$Water)))
+  }
+})
+
+output$predVarFive <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("superPred","Enter Superplasticizer Value",
+                 value = round(median(fullData$Superplasticizer)),
+                 min=0,max=round(max(fullData$Superplasticizer)))
+  }
+})
+
+output$predVarSix <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("coarsePred","Enter Coarse_Aggregate Value",
+                 value = round(median(fullData$Coarse_Aggregate)),
+                 min=0,max=round(max(fullData$Coarse_Aggregate)))
+  }
+})
+
+output$predVarSeven <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("finePred","Enter Fine_Aggregate Value",
+                 value = round(median(fullData$Fine_Aggregate)),
+                 min=0,max=round(max(fullData$Fine_Aggregate)))
+  }
+})
+
+output$predVarEight <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    numericInput("agePred","Enter Age Value",
+                 value = round(median(fullData$Age)),
+                 min=0,max=round(max(fullData$Age)))
+  }
+})
+
+output$predButton <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else {
+    actionButton("doPred","Get Prediction!")
+  }
+})
+
 
 
     

@@ -32,8 +32,7 @@ fullData<-fullData %>%
    Concrete_Compressive_Strength=`Concrete compressive strength(MPa, megapascals)`
   )
 
-## Vector to store range of predictor variables
-predVec<-c(1:8)
+
 
 ##Define UI using NavbarPage layout
 
@@ -309,7 +308,16 @@ shinyUI(navbarPage("Project 3",
          fluidPage(
           sidebarLayout(
             sidebarPanel(
-              h3("Holding for Prediction Controls")
+              uiOutput("predModUI"),
+              uiOutput("predVarOne"),
+              uiOutput("predVarTwo"),
+              uiOutput("predVarThree"),
+              uiOutput("predVarFour"),
+              uiOutput("predVarFive"),
+              uiOutput("predVarSix"),
+              uiOutput("predVarSeven"),
+              uiOutput("predVarEight"),
+              uiOutput("predButton")
             ),
             mainPanel("Prediction Output Goes Here")
             )
