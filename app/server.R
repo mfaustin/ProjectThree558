@@ -453,7 +453,51 @@ output$predButton <- renderUI({
   }
 })
 
+###Process Prediction with eventReactive
 
+
+predValue <- eventReactive(input$doPred,{
+  
+  
+  Cement <- input$cementPred
+  Blast_Furnace_Slag <- input$blastPred
+  Fly_Ash <- input$flyPred
+  Water <- input$waterPred
+  Superplasticizer <- input$superPred
+  Coarse_Aggregate <- input$coarsePred
+  Fine_Aggregate <- input$finePred
+  Age <- input$agePred
+  
+  
+  predictData <- data.frame(Cement,Blast_Furnace_Slag,Fly_Ash,Water,
+                            Superplasticizer, Coarse_Aggregate,
+                            Fine_Aggregate, Age)
+  
+  observe({print(predictData)})
+  
+  if (input$radioModSelect==1){
+    respPred <- predict(regModel(),newdata=predictData)
+  } else if (input$radioModSelect==2){
+    respPred <- predict(treeModel(),newdata=predictData)
+  } else {
+    respPred <- predict(rfModel(),newdata=predictData)
+  }
+  
+  observe({print(respPred)})
+  
+  return(respPred)
+  
+})
+
+observe({str(predValue())})
+observe({print(predValue())})
+
+output$predText <- renderText({
+  
+  paste0("The predicted value is ", predValue())  
+  
+
+})
 
     
 })

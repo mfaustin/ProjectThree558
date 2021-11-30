@@ -319,7 +319,8 @@ shinyUI(navbarPage("Project 3",
               uiOutput("predVarEight"),
               uiOutput("predButton")
             ),
-            mainPanel("Prediction Output Goes Here")
+            mainPanel(
+              textOutput("predText"))
             )
           )        
         )
