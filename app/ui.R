@@ -320,7 +320,11 @@ shinyUI(navbarPage("Project 3",
               uiOutput("predButton")
             ),
             mainPanel(
-              textOutput("predText"))
+              br(),br(),br(),br(),br(),br(),
+              uiOutput("predHeader"),
+              #textOutput("predText"),
+              uiOutput("predText")
+              )
             )
           )        
         )

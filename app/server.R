@@ -350,8 +350,11 @@ output$rfPlot<-renderPlot({
 
 ####Code for Prediction Tab Part########################### 
 
-##Render Dynamic UI so we'll have an initial message
+##Render Dynamic UI parts so we'll have an initial message
 ## saying models need to be fit before prediction occurs
+##I found these needed to be conditioned on input$submit
+##  because if I tried to condition on actual models existing
+##  R would not evaluate the condition 
 output$predModUI <- renderUI({
   if (input$submit<1){
     h4("Models Must be Fit Prior to Prediction")
@@ -365,6 +368,9 @@ output$predModUI <- renderUI({
   }
 })
 
+##Start of a series of Eight numericinputs
+## One for each predictor variable
+##Again uses input$submit for the reasons given previously
 output$predVarOne <- renderUI({
   if (input$submit<1){
     return(NULL)
@@ -445,6 +451,7 @@ output$predVarEight <- renderUI({
   }
 })
 
+##Get Prediction Button
 output$predButton <- renderUI({
   if (input$submit<1){
     return(NULL)
@@ -455,10 +462,10 @@ output$predButton <- renderUI({
 
 ###Process Prediction with eventReactive
 
-
+##Condition on Fit Model button input$doPred
 predValue <- eventReactive(input$doPred,{
-  
-  
+  ##Assign each input value to a variable
+  ##  with same names as existing data frames
   Cement <- input$cementPred
   Blast_Furnace_Slag <- input$blastPred
   Fly_Ash <- input$flyPred
@@ -468,13 +475,14 @@ predValue <- eventReactive(input$doPred,{
   Fine_Aggregate <- input$finePred
   Age <- input$agePred
   
-  
+  ##create a one row data frame based on user input
   predictData <- data.frame(Cement,Blast_Furnace_Slag,Fly_Ash,Water,
                             Superplasticizer, Coarse_Aggregate,
                             Fine_Aggregate, Age)
   
-  observe({print(predictData)})
+  #observe({print(predictData)})
   
+  ##Generate prediction results baed on user specified model
   if (input$radioModSelect==1){
     respPred <- predict(regModel(),newdata=predictData)
   } else if (input$radioModSelect==2){
@@ -483,21 +491,36 @@ predValue <- eventReactive(input$doPred,{
     respPred <- predict(rfModel(),newdata=predictData)
   }
   
-  observe({print(respPred)})
+  #observe({print(respPred)})
   
   return(respPred)
   
 })
 
-observe({str(predValue())})
-observe({print(predValue())})
+#observe({str(predValue())})
+#observe({print(predValue())})
 
-output$predText <- renderText({
-  
-  paste0("The predicted value is ", predValue())  
-  
-
+##Header for Prediction output
+##  Only display after models created and prediction button active
+output$predHeader <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else if (req(input$doPred>0)) {
+    predHead <- paste0("Prediction for Response Concrete Compressive Strength")
+    h2(predHead)
+  }
 })
+
+##Actual prediction text to display
+##  Only display after models created and prediction button active
+output$predText <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else if (req(input$doPred>0)) {
+      h3(paste0("The predicted value is ", round(predValue(),2)) )
+  }
+})
+
 
     
 })
