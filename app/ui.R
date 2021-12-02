@@ -67,7 +67,7 @@ shinyUI(navbarPage("Project 3",
       h2("Page Descriptions"),
       h4("The",strong(" Data Page")," presents a scrollable data view.  Options are available to subset the data view for both columns and rows.  Optionally, the current data view can be downloaded and saved."),
       h4("The",strong(" Data Exploration Page")," displays both graphical and numeric summaries with several different summary choices.  Data for summaries can be subset for certain columns and row values."),
-      h4("The",strong(" Modeling Page")," fits mulitple regression, regression tree, and random forest models.  This page is divided into three tabs.  The Info tab explains the models.  The Fitting Tab allows the user to select criteria for fitting models.  The Prediction Tab uses a fitted model to let the user select predictor values and obtain predictions for concrete compression strength."),
+      h4("The",strong(" Modeling Page")," fits mulitple regression, regression tree, and random forest models.  This page is divided into three tabs.  The ",strong("Model Info")," tab explains the models including benefits and drawbacks of each approach.  The ",strong("Model Fitting")," tab allows the user to select criteria for fitting models.  The user can chose which predictor variables to include, common settings such as number of CV folds, and other model settings.  The ",strong("Prediction")," tab allows the user to chose a fitted model and select predictor values and obtain predictions for concrete compression strength."),
       hr(),
       p("An excavator-mounted hydraulic jackhammer being used to break up concrete. Public Domain.  Source:",
         a(href="https://commons.wikimedia.org/wiki/File:Excavator_jackhammer.jpg","Wikimedia Commons")
@@ -241,12 +241,12 @@ shinyUI(navbarPage("Project 3",
    fluidPage(
       tabsetPanel(
         ##Modeling Info Tab
-        tabPanel("Modeling Info",
+        tabPanel("Model Info",
           fluidPage(
             h2("Model Explanations"),
-            h4("Explain 1"),
-            h4("Explain 2"),
-            h4("Explain 3")
+            h4("Multiple Linear Regression"),
+            h4("Regression Tree"),
+            h4("Random Forest")
           )         
         ),
         ##Model Fitting Tab
