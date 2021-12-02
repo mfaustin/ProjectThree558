@@ -296,9 +296,18 @@ shinyUI(navbarPage("Project 3",
                hr(),
                actionButton("submit","Fit Models"),
              ),
-             mainPanel("Model Output Goes Here",
-               verbatimTextOutput("modTest"),
-               plotOutput("rfPlot")
+             mainPanel(
+               uiOutput("trainHeader"),
+               verbatimTextOutput("regTrain"),
+               verbatimTextOutput("regTrainFit"),
+               verbatimTextOutput("treeTrain"),
+               plotOutput("treePlot"),
+               verbatimTextOutput("rfTrain"),
+               plotOutput("rfPlot"),
+               uiOutput("testHeader"),
+               tableOutput("testTable"),
+               textOutput("testText"),
+               br(),br(),br(),br(),br()
              )
            )
           )

@@ -273,7 +273,7 @@ output$PlotOut <-renderPlot({
   })
   })
   
-  observe({print(regModel())})
+#  observe({print(regModel())})
   
   ##Fit Regression Tree Model  
   treeModel <- eventReactive(input$submit,{
@@ -298,7 +298,6 @@ output$PlotOut <-renderPlot({
   })
   })  
   
-  observe({print(treeModel())})
   
   ##Create Dynamic Mtry Select Based on Number of Vars Chosen
   output$mtrySelect <- renderUI({
@@ -332,11 +331,42 @@ output$PlotOut <-renderPlot({
   })    
   })
 
-observeEvent(input$submit,{
-  print(rfModel())
-})  
   
-output$modTest<-renderPrint({
+##Process Training Output to Display
+
+##Header for Train Fit output
+##  Only display after models created e
+output$trainHeader <- renderUI({
+  if (input$submit<1){
+      return(NULL)
+  } else{
+      predHead <- paste0("Model Fitting Results for Training Data")
+      h2(predHead)
+    }
+})  
+
+
+##Linear Regression Summary output
+output$regTrain<-renderPrint({
+  summary(regModel())
+}) 
+output$regTrainFit<-renderPrint({
+  regModel()
+})   
+  
+##Regression Tree output summary
+output$treeTrain<-renderPrint({
+  treeModel()
+})
+
+output$treePlot<-renderPlot({
+  rfImp <- varImp(treeModel(), scale = TRUE)
+  plot(rfImp, top = 5, main="Regression Tree Model\n Importance Plot")
+  
+})
+
+##Random Forest output summary  
+output$rfTrain<-renderPrint({
   rfModel()
 }) 
 
@@ -346,6 +376,69 @@ output$rfPlot<-renderPlot({
   
 })
 
+##Run Models Against Test Data and Report Fit Stats
+
+##Header for Prediction output
+##  Only display after models created and prediction button active
+output$testHeader <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else{
+    predHead <- paste0("Model Comparison Based on Test Data")
+    h2(predHead)
+  }
+})
+
+testStats <- eventReactive(input$submit,{
+  splitResults <- splitData()
+  #observe({str(splitResults$dTest)})
+  predictRegTest <- predict(regModel(), 
+                            newdata = splitResults$dTest)
+  RMSERegMod <- postResample(predictRegTest, 
+   obs = splitResults$dTest$Concrete_Compressive_Strength)["RMSE"][[1]]
+
+  #observe({print(RMSERegMod)})
+  
+  modelPerformance <- data.frame(RMSE = RMSERegMod, Model = "Linear regression")
+
+  predictTreeTest <- predict(treeModel(), 
+                           newdata = splitResults$dTest) 
+  RMSETreeMod <-postResample(predictTreeTest, 
+      obs = splitResults$dTest$Concrete_Compressive_Strength)["RMSE"][[1]]
+  
+  modelPerformance <- add_row(modelPerformance, RMSE = RMSETreeMod, Model = "Regression Tree")  
+    
+  predictRFTest <- predict(rfModel(), 
+                           newdata = splitResults$dTest) 
+  RMSERFMod <-postResample(predictRFTest, 
+   obs = splitResults$dTest$Concrete_Compressive_Strength)["RMSE"][[1]]
+  
+  
+  modelPerformance <- add_row(modelPerformance, RMSE = RMSERFMod, Model = "Random Forest")
+  #observe({print(RMSERFMod)})
+  
+  selectModel <- modelPerformance %>% slice_min(RMSE)
+  selectModel
+  
+  list(modPerf=modelPerformance,sModel=selectModel)
+})
+
+#observe({print(testStats())})
+
+output$testTable <- renderTable({
+  testResults<-testStats()
+  testResults$modPerf
+})
+
+output$testText <- renderText({
+  testResults<-testStats()
+  #observe(str(testStats()[2]))
+  #observe({print(bestMod[1,1])})
+  bRmse <- testResults$sModel$RMSE
+  bMod <- testResults$sModel$Model
+  paste0("Note: the ",bMod," Model has the lowest RMSE value ",
+         bRmse)
+})
 
 
 ####Code for Prediction Tab Part########################### 
@@ -505,7 +598,7 @@ predValue <- eventReactive(input$doPred,{
 output$predHeader <- renderUI({
   if (input$submit<1){
     return(NULL)
-  } else if (req(input$doPred>0)) {
+  } else if (req(input$doPred)) {
     predHead <- paste0("Prediction for Response Concrete Compressive Strength")
     h2(predHead)
   }
@@ -516,7 +609,7 @@ output$predHeader <- renderUI({
 output$predText <- renderUI({
   if (input$submit<1){
     return(NULL)
-  } else if (req(input$doPred>0)) {
+  } else if (req(input$doPred)) {
       h3(paste0("The predicted value is ", round(predValue(),2)) )
   }
 })
