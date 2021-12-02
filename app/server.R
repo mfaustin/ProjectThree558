@@ -347,6 +347,15 @@ output$trainHeader <- renderUI({
 
 
 ##Linear Regression Summary output
+output$regModHeader <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else{
+    predHead <- paste0("Multiple Linear Regression Results")
+    h4(predHead)
+  }
+})
+
 output$regTrain<-renderPrint({
   summary(regModel())
 }) 
@@ -355,6 +364,15 @@ output$regTrainFit<-renderPrint({
 })   
   
 ##Regression Tree output summary
+output$treeHeader <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else{
+    predHead <- paste0("Regression Tree Results")
+    h4(predHead)
+  }
+})
+
 output$treeTrain<-renderPrint({
   treeModel()
 })
@@ -365,7 +383,16 @@ output$treePlot<-renderPlot({
   
 })
 
-##Random Forest output summary  
+##Random Forest output summary
+output$rfHeader <- renderUI({
+  if (input$submit<1){
+    return(NULL)
+  } else{
+    predHead <- paste0("Random Forest Results")
+    h4(predHead)
+  }
+})
+
 output$rfTrain<-renderPrint({
   rfModel()
 }) 
@@ -378,8 +405,8 @@ output$rfPlot<-renderPlot({
 
 ##Run Models Against Test Data and Report Fit Stats
 
-##Header for Prediction output
-##  Only display after models created and prediction button active
+##Header for Model comparison output
+##  Only display after models created
 output$testHeader <- renderUI({
   if (input$submit<1){
     return(NULL)
@@ -389,6 +416,9 @@ output$testHeader <- renderUI({
   }
 })
 
+##Create data frame output for prediction using test data
+##  One DF reports all RMSE results and the other the lowest RMSE
+##  Both DF are returned
 testStats <- eventReactive(input$submit,{
   splitResults <- splitData()
   #observe({str(splitResults$dTest)})
@@ -425,15 +455,15 @@ testStats <- eventReactive(input$submit,{
 
 #observe({print(testStats())})
 
+##Create an output table with test RMSE values
 output$testTable <- renderTable({
   testResults<-testStats()
   testResults$modPerf
 })
 
+##Create text noting the lowest RMSE model
 output$testText <- renderText({
   testResults<-testStats()
-  #observe(str(testStats()[2]))
-  #observe({print(bestMod[1,1])})
   bRmse <- testResults$sModel$RMSE
   bMod <- testResults$sModel$Model
   paste0("Note: the ",bMod," Model has the lowest RMSE value ",
