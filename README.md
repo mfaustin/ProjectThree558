@@ -28,7 +28,7 @@ project.
     
 -   `caret` The caret package is used for working with data and models.
 
--   `randomForest` The randomForest package is needed so that caret fit the random forest model.
+-   `randomForest` The randomForest package is needed so that caret can fit the random forest model.
 
 -   `corrplot` The corrplot package is used to produce a visual correlation plot.  
 
