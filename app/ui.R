@@ -149,7 +149,6 @@ shinyUI(navbarPage("Project 3",
         checkboxInput("filterData", h4("Filter Data Rows (Selections Filter Data for ALL Summaries)")),
         conditionalPanel(
           "input.filterData==1",
-#          h4("Selections Filter Data for ALL Summaries"),
           radioButtons("superAdded","Superplastizer Added",
             choices = list("No" = 1,"Yes" = 2, "All Rows" = 3),
             selected = 3
@@ -291,7 +290,7 @@ $$'),
                selectInput("numRepeats",
                            "Select Number of Repeats",
                            choices = list("1"=1,"2"=2,"3"=3),
-                           selected = 1),
+                           selected = 3),
                hr(),
                checkboxGroupInput("regVars", 
                                   h4("Select Multiple Linear Regression Model Predictor Variables"),
@@ -357,7 +356,6 @@ $$'),
             mainPanel(
               br(),br(),br(),br(),br(),br(),
               uiOutput("predHeader"),
-              #textOutput("predText"),
               uiOutput("predText")
               )
             )
