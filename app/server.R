@@ -197,7 +197,7 @@ output$PlotOut <-renderPlot({
     output$graphText<-  renderText({"<b>Histogram<b>"})
     g <- ggplot(summaryData,aes(x=!!sym(input$selectHVar)))
     g + geom_histogram(bins=40,color = "brown", fill = "green", 
-                       size = 1)
+                       linewidth = 1)
   }
   
   
