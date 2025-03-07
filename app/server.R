@@ -17,7 +17,7 @@ library(caret)
 
 
 ##Read Data
-fullData<-read_excel("../data/Concrete_Data.xls")
+fullData<-read_excel("./data/Concrete_Data.xls")
 
 ##Rename Columns to be Easier to Read
 fullData<-fullData %>% 
