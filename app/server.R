@@ -460,12 +460,12 @@ testStats <- eventReactive(input$submit,{
 output$testTable <- renderTable({
   testResults<-testStats()
   testResults$modPerf
-})
+},bordered = TRUE)
 
 ##Create text noting the lowest RMSE model
 output$testText <- renderText({
   testResults<-testStats()
-  bRmse <- testResults$sModel$RMSE
+  bRmse <- round(testResults$sModel$RMSE, digits = 2)
   bMod <- testResults$sModel$Model
   paste0("Note: the ",bMod," Model has the lowest RMSE value ",
          bRmse)
