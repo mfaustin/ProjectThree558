@@ -36,7 +36,7 @@ fullData<-fullData %>%
 
 ##Define UI using NavbarPage layout
 
-shinyUI(navbarPage("Project 3",
+navbarPage("Project 3",
   
   ##Enable shiny theme
   theme = shinytheme("cerulean"),
@@ -271,11 +271,13 @@ $$'),
             br(),br(),br()
           )         
         ),
-        ##Model Fitting Tab
+        ##Model Fitting Tab##############
         tabPanel("Model Fitting",
          fluidPage(
            sidebarLayout(
              sidebarPanel(
+               actionButton("submit","Fit Models"),
+               hr(),
                h4("Split Data into Training/Test Sets:"),
                sliderInput("splitSlide",
                   "Select Proportion of Data for Training Set
@@ -315,8 +317,6 @@ $$'),
                                   choices = colnames(fullData)[1:8],
                                   selected = colnames(fullData)[1:8]),
                uiOutput("mtrySelect"),
-               hr(),
-               actionButton("submit","Fit Models"),
              ),
              mainPanel(
                uiOutput("trainHeader"),
@@ -337,12 +337,17 @@ $$'),
            )
           )
         ),
-        ##Model Prediction Tab
+        ##Model Prediction Tab#################
         tabPanel("Prediction",
          fluidPage(
           sidebarLayout(
             sidebarPanel(
+              #Button appears after submit
+              uiOutput("predButton"),
+              hr(),
+              #Differs before and after submit
               uiOutput("predModUI"),
+              #After submit all the following are non NULL
               uiOutput("predVarOne"),
               uiOutput("predVarTwo"),
               uiOutput("predVarThree"),
@@ -351,7 +356,6 @@ $$'),
               uiOutput("predVarSix"),
               uiOutput("predVarSeven"),
               uiOutput("predVarEight"),
-              uiOutput("predButton")
             ),
             mainPanel(
               br(),br(),br(),br(),br(),br(),
@@ -366,6 +370,6 @@ $$'),
   )
                    
                                       
-))                   
+)                   
 
 

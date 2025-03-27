@@ -492,7 +492,7 @@ output$predModUI <- renderUI({
   }
 })
 
-##Start of a series of Eight numericinputs
+##Start of a series of Eight numeric inputs
 ## One for each predictor variable
 ##Again uses input$submit for the reasons given previously
 output$predVarOne <- renderUI({
