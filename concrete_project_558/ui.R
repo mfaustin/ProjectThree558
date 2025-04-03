@@ -319,20 +319,38 @@ $$'),
                uiOutput("mtrySelect"),
              ),
              mainPanel(
-               uiOutput("trainHeader"),
-               uiOutput("regModHeader"),
-               verbatimTextOutput("regTrain"),
-               verbatimTextOutput("regTrainFit"),
-               uiOutput("treeHeader"),
-               verbatimTextOutput("treeTrain"),
-               plotOutput("treePlot"),
-               uiOutput("rfHeader"),
-               verbatimTextOutput("rfTrain"),
-               plotOutput("rfPlot"),
-               uiOutput("testHeader"),
-               tableOutput("testTable"),
-               textOutput("testText"),
-               br(),br(),br(),br(),br()
+               tabsetPanel(
+                 id="model_tabs_1",
+                 tabPanel(
+                   "Model Comparison",
+                   uiOutput("testHeader"),
+                   tableOutput("testTable"),
+                   textOutput("testText"),
+                 ),
+                 tabPanel(
+                   "Training Data Model Results",
+                   tabsetPanel(
+                   tabPanel(
+                     "Multiple Linear Regression",
+                     uiOutput("regModHeader"),
+                     verbatimTextOutput("regTrain"),
+                     verbatimTextOutput("regTrainFit") 
+                   ),
+                   tabPanel(
+                     "Regression Tree",
+                     uiOutput("treeHeader"),
+                     verbatimTextOutput("treeTrain"),
+                     plotOutput("treePlot"),
+                   ),
+                   tabPanel(
+                     "Random Forest",
+                     uiOutput("rfHeader"),
+                     verbatimTextOutput("rfTrain"),
+                     plotOutput("rfPlot"),
+                 ),
+                   )
+                 )
+               )
              )
            )
           )

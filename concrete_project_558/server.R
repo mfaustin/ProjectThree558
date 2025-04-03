@@ -250,6 +250,23 @@ output$PlotOut <-renderPlot({
     list(dTrain = dataTrain, dTest=dataTest)    
   })
   
+  
+  observeEvent(input$submit<1,{
+    hideTab(inputId = "model_tabs_1", target = "Model Comparison")}
+  )
+  
+  observeEvent(input$submit<1,{
+    hideTab(inputId = "model_tabs_1", target = "Training Data Model Results")}
+  )
+
+  observeEvent(input$submit,{
+      showTab(inputId = "model_tabs_1", target = "Model Comparison")}
+    )
+  
+    observeEvent(input$submit,{
+      showTab(inputId = "model_tabs_1", target = "Training Data Model Results")}
+    ) 
+
    
   ##Use eventReactive() to Fit Models ONLY when button submitted
 
@@ -470,6 +487,8 @@ output$testText <- renderText({
   paste0("Note: the ",bMod," Model has the lowest RMSE value ",
          bRmse)
 })
+
+
 
 
 ####Code for Prediction Tab Part########################### 
