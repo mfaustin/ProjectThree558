@@ -11,7 +11,7 @@
 
 
 ###Github changed their default from master to main but R still defaults to master so ref option needs to be added
-shiny::runGitHub('ProjectThree558',username = 'mfaustin', subdir = 'app', ref = 'main')
+shiny::runGitHub('ProjectThree558',username = 'mfaustin', subdir = 'concrete_project_558', ref = 'main')
 
 
 
