@@ -111,11 +111,13 @@ shinyServer(function(input, output, session){
   ##Dynamic Ratio Slider Render for Filtering
   output$slideRatio<-renderUI({
     ratioOut<-ratioData()
+    #observe({print(round(min(ratioOut$cfRatio),1))})
+    #observe({print(round(max(ratioOut$cfRatio),1))})
     sliderInput("cfSlide","Coarse to Fine Aggregate Ratio",
-                min = min(ratioOut$cfRatio),
-                max = max(ratioOut$cfRatio),
-                value = c(min(ratioOut$cfRatio),
-                          max(ratioOut$cfRatio)))
+                min = round(min(ratioOut$cfRatio),1),
+                max = round(max(ratioOut$cfRatio),1),
+                value = c(round(min(ratioOut$cfRatio),1),
+                          round(max(ratioOut$cfRatio),1)))
     })
      
   ##Summary data filtering 
