@@ -276,7 +276,7 @@ $$'),
          fluidPage(
            sidebarLayout(
              sidebarPanel(
-               actionButton("submit","Fit Models"),
+               actionButton("submit",h4("Fit Models")),
                hr(),
                h4("Split Data into Training/Test Sets:"),
                sliderInput("splitSlide",
