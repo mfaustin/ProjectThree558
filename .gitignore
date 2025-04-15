@@ -5,6 +5,9 @@
 # Session Data files
 .RData
 
+# rsconnect files
+*/rsconnect/*
+
 # User-specific files
 .Ruserdata
 
