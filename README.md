@@ -32,10 +32,12 @@ project.
 
 -   `corrplot` The corrplot package is used to produce a visual correlation plot.  
 
+-   `shinyWidgets` The shinyWidgets piacked is used for UI enhancemants like a bolder action button.  
+
 ## Package Installation Code
 
 ``` r
-install.packages(c("shiny","shinythemes","readxl","DT","tidyverse","caret","corrplot","randomForest")) 
+install.packages(c("shiny","shinythemes","readxl","DT","tidyverse","caret","corrplot","randomForest","shinyWidgets")) 
 
 ```
 
