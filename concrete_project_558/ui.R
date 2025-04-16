@@ -15,6 +15,7 @@ library(shinythemes)
 library(readxl)
 library(DT)
 library(tidyverse)
+library(shinyWidgets)
 
 ##Read Data
 fullData<-read_excel("./data/Concrete_Data.xls")
@@ -276,7 +277,7 @@ $$'),
          fluidPage(
            sidebarLayout(
              sidebarPanel(
-               actionButton("submit",h4("Fit Models")),
+               actionBttn("submit","Fit Models"),
                hr(),
                h4("Split Data into Training/Test Sets:"),
                sliderInput("splitSlide",

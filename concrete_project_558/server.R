@@ -601,7 +601,7 @@ output$predButton <- renderUI({
   if (input$submit<1){
     return(NULL)
   } else {
-    actionButton("doPred",h4("Get Prediction"))
+    actionBttn("doPred","Get Prediction")
   }
 })
 
