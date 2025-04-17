@@ -279,7 +279,7 @@ output$PlotOut <-renderPlot({
     regForm<-reformulate(input$regVars,
                          response="Concrete_Compressive_Strength")
     withProgress(message=
-        "Fitting Mulitple Linear Regression Model.  This may take a few minutes  ",
+        "Fitting Mulitple Linear Regression Model.  This may take a few minutes.  ",
                 value = NULL,{
                    
     regFit <- train(regForm, 
@@ -301,7 +301,7 @@ output$PlotOut <-renderPlot({
     treeForm<-reformulate(input$treeVars,
                          response="Concrete_Compressive_Strength")
     withProgress(message=
-                   "Fitting Regression Tree Model.  This may take a few minutes  ",
+                   "Fitting Regression Tree Model.  This may take a few minutes.  ",
                  value = NULL,{
                    
     treeFit <- train(treeForm, 
@@ -336,7 +336,7 @@ output$PlotOut <-renderPlot({
     rfForm<-reformulate(input$rfVars,
                           response="Concrete_Compressive_Strength")
     withProgress(message=
-          "Fitting Random Forest Model.  This may take a few minutes  ",
+          "Fitting Random Forest Model.  This may take a few minutes.  ",
                  value = NULL,{
     
     rfFit <- train(rfForm , 

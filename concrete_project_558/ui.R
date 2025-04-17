@@ -280,6 +280,8 @@ $$'),
         ##Model Fitting Tab##############
         tabPanel("Model Fitting",
          fluidPage(
+          tags$head(tags$style(
+          HTML(".shiny-notification {position:fixed;top: 40%;left: 40%;right: 0%;}"))),
            sidebarLayout(
              sidebarPanel(
                actionBttn("submit","Fit Models"),
