@@ -32,7 +32,7 @@ project.
 
 -   `corrplot` The corrplot package is used to produce a visual correlation plot.  
 
--   `shinyWidgets` The shinyWidgets piacked is used for UI enhancemants like a bolder action button.  
+-   `shinyWidgets` The shinyWidgets package is used for UI enhancemants like a bolder action button.  
 
 ## Package Installation Code
 
