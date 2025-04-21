@@ -16,6 +16,7 @@ library(readxl)
 library(DT)
 library(tidyverse)
 library(shinyWidgets)
+library(plotly)
 
 ##Read Data
 fullData<-read_excel("./data/Concrete_Data.xls")
@@ -231,7 +232,7 @@ navbarPage("Project 3",
       ),
       mainPanel(
         htmlOutput("graphText"),
-        plotOutput("PlotOut"),
+        plotlyOutput("PlotOut"),
         br(),
         hr(),
         htmlOutput("numberText"),

@@ -12,9 +12,10 @@
 library(shiny)
 library(readxl)
 library(tidyverse)
-library(corrplot)
 library(randomForest)
 library(caret)
+library(ggcorrplot)
+library(plotly)
 
 
 ##Read Data
@@ -161,7 +162,7 @@ shinyServer(function(input, output, session){
   })  
   
 ##Graphical Summary Section  
-output$PlotOut <-renderPlot({
+output$PlotOut <-renderPlotly({
   summaryData<-dataExplore()
   if (input$radioGraph==1){
     ##Scatterplot section
@@ -169,7 +170,7 @@ output$PlotOut <-renderPlot({
     g <- ggplot(summaryData, 
                 aes(x = !!sym(input$selectX),
                     y = !!sym(input$selectY))) 
-    g + geom_point()
+    ggplotly(g + geom_point())
   } else if (input$radioGraph==2) {
     ##Corrplot section
     output$graphText<-  renderText({"<b>Correlation Plot<b>"})
@@ -192,15 +193,18 @@ output$PlotOut <-renderPlot({
     }  
     #observe({print(corrData)})
     Correlation<-cor(corrData,method = "spearman")
-    corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = 0.9)
-    corrplot(Correlation,type="lower",method="number",
-             add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
+    ggplotly(ggcorrplot(Correlation, method = "circle", tl.cex = 6.5, 
+                        legend.title = "Correlation"))
+    #Old corrplot code here for reference 
+    #corrplot(Correlation,type="upper",tl.pos="lt", tl.cex = 0.9)
+    #corrplot(Correlation,type="lower",method="number",
+    #         add=TRUE,diag=FALSE,tl.pos="n",tl.cex = 0.9,number.cex = .75)
   } else{
     ##Histogram section
     output$graphText<-  renderText({"<b>Histogram<b>"})
     g <- ggplot(summaryData,aes(x=!!sym(input$selectHVar)))
-    g + geom_histogram(bins=40,color = "brown", fill = "green", 
-                       linewidth = 1)
+    ggplotly(g + geom_histogram(bins=40,color = "brown", fill = "green", 
+                       linewidth = 1))
   }
   
   

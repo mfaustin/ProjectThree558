@@ -30,14 +30,16 @@ project.
 
 -   `randomForest` The randomForest package is needed so that caret can fit the random forest model.
 
--   `corrplot` The corrplot package is used to produce a visual correlation plot.  
+-   `ggcorrplot` The ggcorrplot package is used to produce a visual correlation plot.  
 
--   `shinyWidgets` The shinyWidgets package is used for UI enhancemants like a bolder action button.  
+-   `plotly` The plotly package is used to produce interactive plots.
+
+-   `shinyWidgets` The shinyWidgets package is used for UI enhancements like a bolder action button.  
 
 ## Package Installation Code
 
 ``` r
-install.packages(c("shiny","shinythemes","readxl","DT","tidyverse","caret","corrplot","randomForest","shinyWidgets")) 
+install.packages(c("shiny","shinythemes","readxl","DT","tidyverse","caret","ggcorrplot","randomForest","plotly","shinyWidgets")) 
 
 ```
 
