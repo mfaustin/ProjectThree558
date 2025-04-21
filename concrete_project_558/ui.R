@@ -50,9 +50,9 @@ navbarPage("Project 3",
     ##Using fluid page for needed About elements       
     fluidPage(
       h2("Purpose"),
-      h4("This App allows the user to interactively explore Concrete Compressive Strength data both as raw data and in select statistical models.  ",a(href="https://en.wikipedia.org/wiki/Compressive_strength","Compressive strength"), "measures how much load can be handled by an object being pushed together."),
+      h4("This App allows the user to interactively explore Concrete Compressive Strength data both as raw data and in select statistical models.  ",a(href="https://en.wikipedia.org/wiki/Compressive_strength", target="_blank","Compressive strength"), "measures how much load can be handled by an object being pushed together."),
       h2("Project Data"),
-      h4("This project explores the", a(href="https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength", "Concrete Compressive Strength"),"  data set available in the UCI machine learning repository.  The data set was originally published in article I-Cheng Yeh, \"Modeling of strength of high performance concrete using artificial neural networks,\" Cement and Concrete Research, Vol. 28, No. 12, pp. 1797-1808 (1998)."),
+      h4("This project explores the", a(href="https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength", target="_blank", "Concrete Compressive Strength"),"  data set available in the UCI machine learning repository.  The data set was originally published in article I-Cheng Yeh, \"Modeling of strength of high performance concrete using artificial neural networks,\" Cement and Concrete Research, Vol. 28, No. 12, pp. 1797-1808 (1998)."),
       h4("The data are all quantitative.  This data set presents a regression problem with concrete compressive strength as the response variable.  Higher strength values are desirable in this scenario."),
       h4("The data set has 8 quantitative predictor variables, 1 quantitative response variable, and 1030 observations.  A variable list with variable name and units follows:"),
       tags$ul(
@@ -72,7 +72,7 @@ navbarPage("Project 3",
       h4("The",strong(" Modeling Page")," fits multiple regression, regression tree, and random forest models.  This page is divided into three tabs.  The ",strong("Model Info")," tab explains the models including benefits and drawbacks of each approach.  The ",strong("Model Fitting")," tab allows the user to select criteria for fitting models.  The user can choose which predictor variables to include, common settings such as number of CV folds, and other model settings.  The ",strong("Prediction")," tab allows the user to choose a fitted model and select predictor values to obtain predictions for concrete compressive strength."),
       hr(),
       p("An excavator-mounted hydraulic jackhammer being used to break up concrete. Public Domain.  Source:",
-        a(href="https://commons.wikimedia.org/wiki/File:Excavator_jackhammer.jpg","Wikimedia Commons")
+        a(href="https://commons.wikimedia.org/wiki/File:Excavator_jackhammer.jpg",target="_blank","Wikimedia Commons")
       ),
       img(src="Excavator_jackhammer.jpg"),
     )
